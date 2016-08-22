@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
+from distutils.version import StrictVersion
+
 from cms.models import CMSPlugin, Page
 
+import django
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -12,6 +15,9 @@ from djangocms_attributes_field.fields import AttributesField
 
 from .validators import IntranetURLValidator
 
+if StrictVersion(django.get_version()) < StrictVersion('1.7.0'):
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([], ["^djangocms_attributes_field\.fields\.AttributesField"])
 
 @python_2_unicode_compatible
 class AbstractLink(CMSPlugin):
